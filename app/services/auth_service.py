@@ -1,4 +1,4 @@
-from app.models.auth_model import VerifyRequestDto, VerifyEmailDto, SignUpDto, SignInDto
+from app.models.auth_model import VerifyRequestDto, VerifyEmailDto, SignUpDto, SignInDto, SignInTokenDto
 from app.db import auth_col, user_col, clean_doc
 from app.utils.mail import sendEmail
 import random
@@ -110,7 +110,14 @@ def signIn(signInDto: SignInDto):
     access_token = create_access_token({"email": email})
     return JSONResponse(status_code=200, content={"message": "User signed in successfully", "access_token": access_token})
     
-
+def signInToken(signInTokenDto: SignInTokenDto):
+    payload = jwt.decode(signInToken, os.getenv("JWT_SECRET"), algorithms=[os.getenv("JWT_ALGORITHM")])
+    user = user_col.find_one({"email": payload.get("email")})
+    if not user:
+        return JSONResponse(status_code=404, content={"message": "User not found"})
+    user = clean_doc(user)
+    return JSONResponse(status_code=200, content={"message": "Token is valid", "user": user})
+    
 def create_access_token(data: dict):
     encoded_jwt = jwt.encode(data, os.getenv("JWT_SECRET"), algorithm=os.getenv("JWT_ALGORITHM"))
     return encoded_jwt

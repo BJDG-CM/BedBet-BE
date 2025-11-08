@@ -17,6 +17,9 @@ class SignUpDto(BaseModel):
 class SignInDto(BaseModel):
     email: str
     password: str
+    
+class SignInTokenDto(BaseModel):
+    token: str
 
 class AuthModel(BaseModel):
     email: str
