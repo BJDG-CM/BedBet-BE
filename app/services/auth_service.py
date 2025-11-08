@@ -8,7 +8,6 @@ import jwt
 import os
 import uuid
 
-
 def verifyRequest(verifyEmailDto: VerifyRequestDto):
     verifyRequestDict = verifyEmailDto.model_dump()
     email = verifyRequestDict['email']
