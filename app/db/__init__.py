@@ -16,3 +16,5 @@ db = client["sleep"]
 
 user_col = db["users"]
 auth_col = db["auth"]
+coin_col = db["coin"]
+money_col = db["money"]
