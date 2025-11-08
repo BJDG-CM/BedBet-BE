@@ -102,13 +102,14 @@ def signIn(signInDto: SignInDto):
     if not user:
         return JSONResponse(status_code=404, content={"message": "User not found"})
     user = clean_doc(user)
+    del user['password']
     stored_hashed_password = user.get('password')
     
     if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
         return JSONResponse(status_code=400, content={"message": "Incorrect password"})
     
     access_token = create_access_token({"email": email})
-    return JSONResponse(status_code=200, content={"message": "User signed in successfully", "access_token": access_token})
+    return JSONResponse(status_code=200, content={"message": "User signed in successfully", "access_token": access_token, "user": user})
     
 def signInToken(signInTokenDto: SignInTokenDto):
     signInTokenDict = signInTokenDto.model_dump()
@@ -117,6 +118,7 @@ def signInToken(signInTokenDto: SignInTokenDto):
     if not user:
         return JSONResponse(status_code=404, content={"message": "User not found"})
     user = clean_doc(user)
+    del user['password']
     return JSONResponse(status_code=200, content={"message": "Token is valid", "user": user})
     
 def create_access_token(data: dict):
