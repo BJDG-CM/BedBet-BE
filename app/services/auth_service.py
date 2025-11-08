@@ -90,7 +90,7 @@ def signUp(signUpDto: SignUpDto):
         }
     )
     
-    access_token = create_access_token({"email": email})
+    access_token = create_access_token({"email": email, 'userUid': userUid})
     return JSONResponse(status_code=200, content={"message": "User signed up successfully", "access_token": access_token})
 
 def signIn(signInDto: SignInDto):
@@ -102,18 +102,19 @@ def signIn(signInDto: SignInDto):
     if not user:
         return JSONResponse(status_code=404, content={"message": "User not found"})
     user = clean_doc(user)
-    del user['password']
     stored_hashed_password = user.get('password')
+    
+    del user['password']
     
     if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
         return JSONResponse(status_code=400, content={"message": "Incorrect password"})
     
-    access_token = create_access_token({"email": email})
+    access_token = create_access_token({"email": email, 'userUid': user.get('userUid')})
     return JSONResponse(status_code=200, content={"message": "User signed in successfully", "access_token": access_token, "user": user})
     
 def signInToken(signInTokenDto: SignInTokenDto):
     signInTokenDict = signInTokenDto.model_dump()
-    payload = jwt.decode(signInTokenDict.get('token'), os.getenv("JWT_SECRET"), algorithms=[os.getenv("JWT_ALGORITHM")])
+    payload = jwt.decode(signInTokenDict.get('userUid'), os.getenv("JWT_SECRET"), algorithms=[os.getenv("JWT_ALGORITHM")])
     user = user_col.find_one({"email": payload.get("email")})
     if not user:
         return JSONResponse(status_code=404, content={"message": "User not found"})

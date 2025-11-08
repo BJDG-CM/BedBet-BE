@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Header
+from fastapi import APIRouter
 from app.models.auth_model import VerifyRequestDto, VerifyEmailDto, SignUpDto, SignInDto, SignInTokenDto
 from app.services.auth_service import verifyRequest, verifyCode, signUp, signIn, signInToken
 
