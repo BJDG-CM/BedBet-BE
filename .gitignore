@@ -14,7 +14,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -205,3 +204,67 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node modules
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js build output
+.next/
+.next/*
+
+# Static export
+out/
+build/
+
+# Vercel
+.vercel/
+.vercel_build_output/
+
+# Cache
+.cache/
+.parcel-cache/
+dist/
+tmp/
+npm-packages-offline-cache/
+.npm/
+
+# Env files (민감 정보)
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.nyc_output/
+
+# IDE / editor
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+*.pem
+*.env.backup
+*.local
+
+# Lockfiles (선택) — 필요시 커밋하지 않으려면 활성화
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
