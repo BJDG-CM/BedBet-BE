@@ -111,7 +111,8 @@ def signIn(signInDto: SignInDto):
     return JSONResponse(status_code=200, content={"message": "User signed in successfully", "access_token": access_token})
     
 def signInToken(signInTokenDto: SignInTokenDto):
-    payload = jwt.decode(signInTokenDto, os.getenv("JWT_SECRET"), algorithms=[os.getenv("JWT_ALGORITHM")])
+    signInTokenDict = signInTokenDto.model_dump()
+    payload = jwt.decode(signInTokenDict.get('token'), os.getenv("JWT_SECRET"), algorithms=[os.getenv("JWT_ALGORITHM")])
     user = user_col.find_one({"email": payload.get("email")})
     if not user:
         return JSONResponse(status_code=404, content={"message": "User not found"})
