@@ -49,6 +49,10 @@ def createTeam(ownerUid: str, teamCreateDto: TeamCreateDto):
     if _to_kst(start_at) >= _to_kst(end_at):
         raise HTTPException(status_code=400, detail={"message": "challenge_start_at must be before challenge_end_at."})
     
+    duplicate = team_col.find_one({"challenge_start_at": start_at, "challenge_end_at": end_at})
+    if duplicate:
+        raise HTTPException(status_code=409, detail={"message": "A team with the same start and end time already exists."})
+    
     user = user_col.find_one({"userUid": ownerUid})
     if not user:
         raise HTTPException(status_code=404, detail={"message": "User not found."})
