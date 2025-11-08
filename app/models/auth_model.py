@@ -13,6 +13,10 @@ class SignUpDto(BaseModel):
     password: str
     account_number: str
     bank: str
+    
+class SignInDto(BaseModel):
+    email: str
+    password: str
 
 class AuthModel(BaseModel):
     email: str

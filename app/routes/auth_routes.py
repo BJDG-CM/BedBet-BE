@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query, Header
-from app.models.auth_model import VerifyRequestDto, VerifyEmailDto, SignUpDto
-from app.services.auth_service import verifyRequest, verifyCode, signUp
+from app.models.auth_model import VerifyRequestDto, VerifyEmailDto, SignUpDto, SignInDto
+from app.services.auth_service import verifyRequest, verifyCode, signUp, signIn
 
 router = APIRouter()
 
@@ -16,3 +16,7 @@ def verify_code(verifyEmailDto: VerifyEmailDto):
 def sign_up(signUpDto: SignUpDto):
     return signUp(signUpDto)
 
+
+@router.get('/signin')
+def sign_in(signInDto: SignInDto):
+    return signIn(signInDto)

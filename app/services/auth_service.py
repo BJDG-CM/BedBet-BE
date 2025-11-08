@@ -93,6 +93,24 @@ def signUp(signUpDto: SignUpDto):
     access_token = create_access_token({"email": email})
     return JSONResponse(status_code=200, content={"message": "User signed up successfully", "access_token": access_token})
 
+def signIn(signInDto):
+    signInDict = signInDto.model_dump()
+    email = signInDict['email']
+    password = signInDict['password']
+    
+    user = user_col.find_one({"email": email})
+    if not user:
+        return JSONResponse(status_code=404, content={"message": "User not found"})
+    user = clean_doc(user)
+    stored_hashed_password = user.get('password')
+    
+    if not bcrypt.checkpw(password.encode('utf-8'), stored_hashed_password.encode('utf-8')):
+        return JSONResponse(status_code=400, content={"message": "Incorrect password"})
+    
+    access_token = create_access_token({"email": email})
+    return JSONResponse(status_code=200, content={"message": "User signed in successfully", "access_token": access_token})
+    
+
 def create_access_token(data: dict):
     encoded_jwt = jwt.encode(data, os.getenv("JWT_SECRET"), algorithm=os.getenv("JWT_ALGORITHM"))
     return encoded_jwt
