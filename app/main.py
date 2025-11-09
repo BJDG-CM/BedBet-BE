@@ -5,6 +5,8 @@ import asyncio
 from datetime import datetime
 from rich.console import Console
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.middleware.cors import CORSMiddleware
+
 
 console = Console()
 
@@ -49,6 +51,12 @@ class RichLoggerMiddleware(BaseHTTPMiddleware):
 # FastAPI 앱 구성
 app = FastAPI()
 app.add_middleware(RichLoggerMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def start_background_tasks():
