@@ -27,4 +27,4 @@ async def get_team_info(teamUid: str):
 
 @router.get("/disqualify")
 async def disqualify_teams(userUid: str = Depends(verify_token)):
-    disqualifyUserFromTeam(userUid)
+    return disqualifyUserFromTeam(userUid)
